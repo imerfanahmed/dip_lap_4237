@@ -1,63 +1,44 @@
+# Import Required Libraries
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
-from skimage import exposure
 
-# Load an image using OpenCV
-image_cv = cv2.imread('sample_color.jpg', cv2.IMREAD_GRAYSCALE)
+# Load Image using OpenCV
+img = cv2.imread('sample_color.jpg')  # Replace with your image path
 
-# Display the original image using OpenCV
-plt.figure(figsize=(12, 6))
-plt.subplot(1, 2, 1)
-plt.title("Original Image (OpenCV)")
-plt.imshow(image_cv, cmap='gray')
-plt.axis('off')
+# Convert BGR to RGB for Matplotlib
+img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-# Image manipulation with OpenCV: Apply Gaussian blur
-image_blur = cv2.GaussianBlur(image_cv, (5, 5), 0)
+# Read image using PIL
+img_pil = Image.open('sample_color.jpg')
 
-# Display the blurred image
-plt.subplot(1, 2, 2)
-plt.title("Blurred Image (OpenCV)")
-plt.imshow(image_blur, cmap='gray')
-plt.axis('off')
-plt.show()
+# Convert to Grayscale using OpenCV
+gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-# Load the image using Pillow
-image_pil = Image.open('input_image.jpg')
+# Prepare display
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+fig.suptitle('Image Display using Different Libraries', fontsize=16)
 
-# Display the image using Pillow
-plt.figure(figsize=(6, 6))
-plt.title("Original Image (Pillow)")
-plt.imshow(image_pil)
-plt.axis('off')
-plt.show()
+# Original Image (OpenCV - BGR converted to RGB)
+axes[0, 0].imshow(img_rgb)
+axes[0, 0].set_title('Original Image (RGB)')
+axes[0, 0].axis('off')
 
-# Convert the image to grayscale using Pillow
-image_pil_gray = image_pil.convert('L')
+# Grayscale Image
+axes[0, 1].imshow(gray_img, cmap='gray')
+axes[0, 1].set_title('Grayscale Image (OpenCV)')
+axes[0, 1].axis('off')
 
-# Display the grayscale image
-plt.figure(figsize=(6, 6))
-plt.title("Grayscale Image (Pillow)")
-plt.imshow(image_pil_gray, cmap='gray')
-plt.axis('off')
-plt.show()
+# Image using PIL
+axes[1, 0].imshow(img_pil)
+axes[1, 0].set_title('Image (PIL)')
+axes[1, 0].axis('off')
 
-# Image manipulation with scikit-image: Histogram Equalization
-image_skimage = exposure.equalize_hist(image_cv)
+# PIL as NumPy Array
+axes[1, 1].imshow(np.asarray(img_pil))
+axes[1, 1].set_title('PIL as NumPy Array')
+axes[1, 1].axis('off')
 
-# Display the original image and the equalized image
-plt.figure(figsize=(12, 6))
-
-plt.subplot(1, 2, 1)
-plt.title("Original Image (scikit-image)")
-plt.imshow(image_cv, cmap='gray')
-plt.axis('off')
-
-plt.subplot(1, 2, 2)
-plt.title("Equalized Image (scikit-image)")
-plt.imshow(image_skimage, cmap='gray')
-plt.axis('off')
-
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])  # Leave space for suptitle
 plt.show()
