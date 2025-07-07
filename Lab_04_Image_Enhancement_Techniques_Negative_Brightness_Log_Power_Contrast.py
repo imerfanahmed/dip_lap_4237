@@ -2,38 +2,29 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-#read original image in rgb format
-image = cv2.imread('sample_color.jpg', cv2.IMREAD_GRAYSCALE)
+# Load image in grayscale
+img = cv2.imread('sample_color.jpg', cv2.IMREAD_GRAYSCALE)
 
+# Apply enhancements
+negative = 255 - img
+bright = cv2.add(img, 50)
+# c) Log Transformation (fixed)
+log = np.log1p(img.astype(np.float32))
+log = np.uint8(255 * log / np.max(log))
 
-# a) Negative Image
-negative_img = 255 - image
+gamma = np.uint8(255 * (img / 255) ** 2)
+contrast = cv2.equalizeHist(img)
 
-# b) Brightness Enhancement
-brightness_value = 50
-bright_img = cv2.add(image, brightness_value)
-
-# c) Log Transformation
-c = 255 / np.log(1 + np.max(image))
-log_img = c * (np.log(1 + image.astype(np.float32)))
-log_img = np.array(log_img, dtype=np.uint8)
-
-# d) Power-law (Gamma) Transformation
-gamma = 2.0
-gamma_img = np.array(255 * (image / 255) ** gamma, dtype='uint8')
-
-# e) Histogram Equalization
-contrast_img = cv2.equalizeHist(image)
-
-# Display Results
+# Titles and images
 titles = ['Original', 'Negative', 'Brightness', 'Log', 'Gamma', 'Contrast']
-images = [image, negative_img, bright_img, log_img, gamma_img, contrast_img]
+images = [img, negative, bright, log, gamma, contrast]
 
+# Show all in one window
 plt.figure(figsize=(12, 8))
-for i in range(6):
+for i, (title, image) in enumerate(zip(titles, images)):
     plt.subplot(2, 3, i+1)
-    plt.imshow(images[i], cmap='gray')
-    plt.title(titles[i])
+    plt.imshow(image, cmap='gray')
+    plt.title(title)
     plt.axis('off')
 plt.tight_layout()
 plt.show()

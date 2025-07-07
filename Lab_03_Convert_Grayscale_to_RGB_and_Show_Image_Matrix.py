@@ -2,17 +2,16 @@ import cv2
 import matplotlib.pyplot as plt
 
 # Load grayscale image
-gray_image = cv2.imread('sample_color.jpg', cv2.IMREAD_GRAYSCALE)
+gray = cv2.imread('sample_color.jpg', cv2.IMREAD_GRAYSCALE)
 
-# Convert grayscale to RGB
-rgb_image = cv2.cvtColor(gray_image, cv2.COLOR_GRAY2RGB)
+# Convert grayscale to 3-channel RGB
+rgb = cv2.cvtColor(gray, cv2.COLOR_GRAY2RGB)
 
-# Show the RGB image
-plt.imshow(rgb_image)
-plt.title('Grayscale to RGB Image')
+# Show image
+plt.imshow(rgb)
+plt.title('Grayscale → RGB')
 plt.axis('off')
 plt.show()
 
-# Show the RGB image matrix
-print("RGB Image Matrix:")
-print(rgb_image)
+# Print matrix
+print("RGB Image Matrix:\n", rgb)
