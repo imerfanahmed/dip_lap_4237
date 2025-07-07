@@ -8,9 +8,10 @@ img = cv2.imread('sample_color.jpg', cv2.IMREAD_GRAYSCALE)
 # Apply enhancements
 negative = 255 - img
 bright = cv2.add(img, 50)
-# c) Log Transformation (fixed)
-log = np.log1p(img.astype(np.float32))
-log = np.uint8(255 * log / np.max(log))
+# formula will be s = c* log(1 + r)
+
+log = 50*np.log(1+img.astype(np.float32))  # log1p is log(1 + x)
+
 
 gamma = np.uint8(255 * (img / 255) ** 2)
 contrast = cv2.equalizeHist(img)
